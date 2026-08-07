@@ -27,7 +27,13 @@ Na demonstração com uma imagem externa ao dataset, o modelo identificou:
 
 A inferência foi executada na imagem original e em versões rotacionadas em 90° e 270°. As caixas foram convertidas para as coordenadas da imagem original e as detecções repetidas foram removidas por Non-Maximum Suppression (NMS).
 
-A demonstração, os gráficos e as demais saídas de avaliação estão registrados no notebook do projeto.
+<p align="center">
+  <img src="resultados/childsafe_resultado_final.png" alt="Demonstração externa do ChildSafe Vision" width="760">
+</p>
+
+<p align="center">
+  <em>Resultado da inferência em uma imagem externa ao dataset, com três pilhas e uma tomada detectadas.</em>
+</p>
 
 ## Pipeline do projeto
 
@@ -189,6 +195,12 @@ fastcamp-projeto-final-visao-computacional/
 │   └── trabalho_final_pither_duarte.ipynb
 ├── modelo/
 │   └── best_100_epocas.pt
+├── resultados/
+│   ├── BoxF1_curve.png
+│   ├── childsafe_resultado_final.png
+│   ├── confusion_matrix.png
+│   ├── confusion_matrix_normalized.png
+│   └── results.png
 └── README.md
 ```
 
@@ -235,7 +247,35 @@ A avaliação foi feita em 410 imagens e 692 instâncias.
 
 A pilha apresentou o menor mAP@50-95. Essa classe reúne mais instâncias, objetos menores e diferentes orientações.
 
-Os gráficos de treinamento, a matriz de confusão, as avaliações por classe e os exemplos de inferência estão preservados nas saídas do notebook `notebooks/trabalho_final_pither_duarte.ipynb`.
+### Curvas de treinamento
+
+<p align="center">
+  <img src="resultados/results.png" alt="Curvas de treinamento do YOLOv8n" width="760">
+</p>
+
+<p align="center">
+  <em>Evolução das perdas e das métricas durante as 100 épocas de treinamento.</em>
+</p>
+
+### Matriz de confusão
+
+<p align="center">
+  <img src="resultados/confusion_matrix.png" alt="Matriz de confusão do modelo" width="560">
+</p>
+
+<p align="center">
+  <em>Matriz de confusão obtida durante a avaliação no conjunto sintético de teste.</em>
+</p>
+
+### Curva F1
+
+<p align="center">
+  <img src="resultados/BoxF1_curve.png" alt="Curva F1 por confiança" width="700">
+</p>
+
+<p align="center">
+  <em>Relação entre o valor de confiança utilizado e a pontuação F1 do modelo.</em>
+</p>
 
 ## Domain gap
 
