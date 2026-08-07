@@ -2,7 +2,7 @@
 
 Sistema de detecção de objetos domésticos potencialmente perigosos para crianças, treinado exclusivamente com imagens sintéticas geradas no Blender.
 
-O projeto apresenta um pipeline completo de visão computacional: preparação de cenas 3D, geração automática de imagens, criação de anotações no formato YOLO, organização e validação do dataset, treinamento do YOLOv8n e avaliação em dados sintéticos e em uma imagem externa.
+O projeto apresenta um pipeline completo de visão computacional: preparação de cenas 3D, geração automática de imagens, criação de anotações no formato YOLO, organização e validação do dataset, treinamento do YOLOv8n e avaliação em dados sintéticos e em uma imagem externa ao conjunto de treinamento.
 
 ## Objetivo
 
@@ -15,21 +15,19 @@ O ChildSafe Vision foi desenvolvido como uma prova de conceito para detectar qua
 | 2 | Pilha |
 | 3 | Tomada |
 
-O sistema apenas localiza e classifica os objetos. Ele não detecta crianças, não mede distância real e não substitui supervisão ou medidas de segurança doméstica.
+O sistema apenas localiza e classifica os objetos. Ele não detecta crianças, não mede distâncias reais e não substitui supervisão ou medidas de segurança doméstica.
 
 ## Resultado da demonstração
 
-Na demonstração externa, o modelo identificou:
+Na demonstração com uma imagem externa ao dataset, o modelo identificou:
 
 - 3 pilhas;
 - 1 tomada;
 - 4 objetos detectados no total.
 
-A inferência foi executada na imagem original e em versões rotacionadas em 90° e 270°. As caixas foram convertidas para as coordenadas originais e as detecções repetidas foram removidas por Non-Maximum Suppression (NMS).
+A inferência foi executada na imagem original e em versões rotacionadas em 90° e 270°. As caixas foram convertidas para as coordenadas da imagem original e as detecções repetidas foram removidas por Non-Maximum Suppression (NMS).
 
-<p align="center">
-  <img src="resultados/childsafe_resultado_final.jpg" alt="Demonstração externa do ChildSafe Vision" width="760">
-</p>
+A demonstração, os gráficos e as demais saídas de avaliação estão registrados no notebook do projeto.
 
 ## Pipeline do projeto
 
@@ -88,15 +86,22 @@ O dataset foi verificado quanto a:
 - classes entre 0 e 3;
 - coordenadas normalizadas entre 0 e 1;
 - largura e altura maiores que zero;
-- ausência de nomes repetidos entre train, val e test.
+- ausência de nomes repetidos entre `train`, `val` e `test`.
 
-### Dataset completo
+### Disponibilidade do dataset
 
-O dataset completo possui aproximadamente 1,25 GB e deve ser disponibilizado externamente.
+O dataset completo está incluído neste repositório, dentro da pasta `dataset_final/`.
 
-**Link para download:** `ADICIONAR_LINK_PUBLICO_DO_DATASET`
+As 4.100 imagens PNG são armazenadas com Git LFS, enquanto as 4.100 anotações YOLO permanecem como arquivos de texto comuns. O diretório completo ocupa aproximadamente 3 GB.
 
-Antes da entrega, substitua a linha acima pelo link público do arquivo `dataset_final.zip` e teste o acesso em uma janela anônima.
+Para baixar corretamente as imagens, instale o Git LFS antes de clonar o repositório:
+
+```bash
+git lfs install
+git clone https://github.com/pitherduarte/fastcamp-projeto-final-visao-computacional.git
+cd fastcamp-projeto-final-visao-computacional
+git lfs pull
+```
 
 ## Geração no Blender
 
@@ -157,6 +162,8 @@ A tomada americana também foi construída proceduralmente. A geometria foi form
 
 ```text
 fastcamp-projeto-final-visao-computacional/
+├── .gitattributes
+├── .gitignore
 ├── blender/
 │   ├── assets/
 │   ├── cenas/
@@ -167,26 +174,23 @@ fastcamp-projeto-final-visao-computacional/
 │       ├── tomada/
 │       └── README.md
 ├── dataset_final/
+│   ├── images/
+│   │   ├── train/
+│   │   ├── val/
+│   │   └── test/
+│   ├── labels/
+│   │   ├── train/
+│   │   ├── val/
+│   │   └── test/
 │   ├── data.yaml
 │   ├── classes.txt
-│   ├── resumo_dataset.txt
-│   └── exemplos/
+│   └── resumo_dataset.txt
 ├── notebooks/
-│   └── ChildSafe_Vision_Projeto_Final.ipynb
+│   └── trabalho_final_pither_duarte.ipynb
 ├── modelo/
 │   └── best_100_epocas.pt
-├── resultados/
-│   ├── results.png
-│   ├── confusion_matrix.png
-│   ├── confusion_matrix_normalized.png
-│   ├── BoxF1_curve.png
-│   ├── childsafe_resultado_final.jpg
-│   ├── deteccoes.csv
-│   └── metricas_finais.json
 └── README.md
 ```
-
-Os nomes podem variar ligeiramente conforme a organização final do repositório.
 
 ## Treinamento
 
@@ -231,17 +235,11 @@ A avaliação foi feita em 410 imagens e 692 instâncias.
 
 A pilha apresentou o menor mAP@50-95. Essa classe reúne mais instâncias, objetos menores e diferentes orientações.
 
-<p align="center">
-  <img src="resultados/results.png" alt="Curvas de treinamento do modelo" width="760">
-</p>
-
-<p align="center">
-  <img src="resultados/confusion_matrix.png" alt="Matriz de confusão" width="520">
-</p>
+Os gráficos de treinamento, a matriz de confusão, as avaliações por classe e os exemplos de inferência estão preservados nas saídas do notebook `notebooks/trabalho_final_pither_duarte.ipynb`.
 
 ## Domain gap
 
-O desempenho quase perfeito no teste sintético não representa garantia de desempenho igual em imagens reais.
+O desempenho quase perfeito no teste sintético não representa garantia de desempenho igual em imagens externas ao dataset.
 
 Na demonstração externa, o modelo foi sensível a:
 
@@ -261,7 +259,7 @@ Possíveis melhorias:
 - incluir novos ambientes e fundos;
 - gerar mais oclusões e escalas;
 - variar com maior intensidade a iluminação;
-- avaliar o modelo em mais fotografias externas;
+- avaliar o modelo em mais imagens externas;
 - usar adaptação de domínio;
 - testar pré-treinamento sintético seguido de ajuste com dados reais.
 
@@ -269,35 +267,74 @@ Possíveis melhorias:
 
 ### 1. Clonar o repositório
 
+Instale o Git LFS e clone o projeto:
+
 ```bash
-git clone https://github.com/SEU_USUARIO/fastcamp-projeto-final-visao-computacional.git
+git lfs install
+git clone https://github.com/pitherduarte/fastcamp-projeto-final-visao-computacional.git
 cd fastcamp-projeto-final-visao-computacional
+git lfs pull
 ```
 
-Substitua `SEU_USUARIO` pelo nome correto da conta no GitHub.
+O download pode demorar porque o dataset completo possui aproximadamente 3 GB.
 
-### 2. Treinamento e avaliação
+### 2. Instalar as dependências
+
+Para executar as etapas de treinamento, avaliação e inferência:
+
+```bash
+pip install ultralytics opencv-python pandas matplotlib pillow pyyaml
+```
+
+O treinamento original foi realizado no Google Colab, que já fornece o PyTorch e o suporte à GPU.
+
+### 3. Treinamento e avaliação
 
 Abra o notebook:
 
 ```text
-notebooks/ChildSafe_Vision_Projeto_Final.ipynb
+notebooks/trabalho_final_pither_duarte.ipynb
 ```
 
-A execução foi preparada para o Google Colab. O notebook contém:
+O notebook registra a execução completa realizada no Google Colab, incluindo:
 
 - configuração do ambiente;
-- acesso e extração do dataset;
-- validação;
+- validação do dataset;
 - visualização das anotações;
 - treinamento;
 - avaliação;
-- gráficos;
-- inferência externa;
+- gráficos e matriz de confusão;
+- inferência em uma imagem externa;
 - análise do domain gap;
-- organização dos artefatos.
+- organização dos artefatos finais.
 
-### 3. Geração de novas imagens
+Para uma nova execução, ajuste no notebook os caminhos de entrada para apontarem para a pasta `dataset_final/` clonada do repositório.
+
+O arquivo de configuração utilizado pelo YOLO está em:
+
+```text
+dataset_final/data.yaml
+```
+
+### 4. Usar o modelo treinado
+
+O melhor peso salvo está em:
+
+```text
+modelo/best_100_epocas.pt
+```
+
+Exemplo básico em Python:
+
+```python
+from ultralytics import YOLO
+
+modelo = YOLO("modelo/best_100_epocas.pt")
+resultados = modelo.predict(source="caminho/para/imagem.jpg", conf=0.25)
+resultados[0].save(filename="resultado.jpg")
+```
+
+### 5. Gerar novas imagens sintéticas
 
 Use o Blender 2.83.
 
@@ -344,7 +381,8 @@ Exemplo de execução em modo background no Windows:
 - Pandas;
 - Matplotlib;
 - Pillow;
-- PyYAML.
+- PyYAML;
+- Git LFS.
 
 ## Créditos dos ativos 3D
 
@@ -372,4 +410,5 @@ Projeto final desenvolvido para demonstrar um pipeline completo de geração de 
 - O modelo foi treinado exclusivamente com dados sintéticos.
 - O projeto é uma prova de conceito acadêmica.
 - O resultado não deve ser utilizado como único mecanismo de proteção infantil.
+- O dataset completo está armazenado no repositório por meio do Git LFS.
 - O relatório técnico é entregue separadamente e não faz parte deste repositório.
