@@ -1,0 +1,4 @@
+tesoura
+faca
+pilha
+tomada

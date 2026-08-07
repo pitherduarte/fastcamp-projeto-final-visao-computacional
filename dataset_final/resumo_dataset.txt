@@ -1,0 +1,31 @@
+DATASET FINAL CHILDSAFE VISION
+============================================================
+Total de imagens: 4100
+Classes:
+0 = tesoura
+1 = faca
+2 = pilha
+3 = tomada
+
+Divisão:
+train = 80%
+val = 10%
+test = 10%
+
+train: 3280 imagens, 3280 labels, 3280 pares
+  tesoura: 800
+  faca: 800
+  pilha: 800
+  tomada: 880
+val: 410 imagens, 410 labels, 410 pares
+  tesoura: 100
+  faca: 100
+  pilha: 100
+  tomada: 110
+test: 410 imagens, 410 labels, 410 pares
+  tesoura: 100
+  faca: 100
+  pilha: 100
+  tomada: 110
+
+Arquivo de configuração: data.yaml

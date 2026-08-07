@@ -1,0 +1,10 @@
+path: .
+train: images/train
+val: images/val
+test: images/test
+
+names:
+  0: tesoura
+  1: faca
+  2: pilha
+  3: tomada

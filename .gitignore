@@ -1,0 +1,9 @@
+﻿*.blend1
+*.zip
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+runs/
+scripts_auxiliares/
+Thumbs.db
+.DS_Store
